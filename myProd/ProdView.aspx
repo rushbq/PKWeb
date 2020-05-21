@@ -47,6 +47,11 @@
                                 <h5><%=this.GetLocalResourceObject("txt_新品").ToString()%></h5>
                             </div>
                         </asp:PlaceHolder>
+                        <asp:PlaceHolder ID="ph_Label_Rec" runat="server">
+                            <div class="new">
+                                <h5><%=this.GetLocalResourceObject("txt_推薦").ToString()%></h5>
+                            </div>
+                        </asp:PlaceHolder>
                         <asp:PlaceHolder ID="ph_Label_Stop" runat="server">
                             <div class="discontinued">
                                 <h5><%=this.GetLocalResourceObject("txt_已停售").ToString()%></h5>

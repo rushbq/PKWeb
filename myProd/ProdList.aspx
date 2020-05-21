@@ -53,6 +53,13 @@
                                         </div>
                                     </div>
                                 </asp:PlaceHolder>
+                                <asp:PlaceHolder ID="ph_RecmItem" runat="server" Visible="false">
+                                    <div class="label-box">
+                                        <div class="new">
+                                            <h3><%=this.GetLocalResourceObject("txt_推薦").ToString()%></h3>
+                                        </div>
+                                    </div>
+                                </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="ph_Stop" runat="server" Visible="false">
                                     <div class="label-box">
                                         <div class="Discontinued">

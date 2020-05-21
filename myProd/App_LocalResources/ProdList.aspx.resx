@@ -165,4 +165,7 @@
   <data name="txt_停售說明" xml:space="preserve">
     <value>Sold out. Please click and contact us</value>
   </data>
+  <data name="txt_推薦" xml:space="preserve">
+    <value>推薦</value>
+  </data>
 </root>

@@ -25,7 +25,7 @@
 
             //載入Html
             $.ajax({
-                url: WebUrl + 'myInfo/html/' + Lang + '/Profile.html?v=20200117',
+                url: WebUrl + 'myInfo/html/' + Lang + '/Profile.html?v=20200521',
                 dataType: "html"
 
             }).done(function (response) {

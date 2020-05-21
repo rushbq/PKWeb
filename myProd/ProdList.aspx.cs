@@ -100,6 +100,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine("    RTRIM(myData.Model_No) AS ModelNo, RTRIM(myData.Model_Name_{0}) AS ModelName".FormatThis(fn_Language.Param_Lang));
             //是否為新品
             SBSql.AppendLine("    , (CASE WHEN (DATEDIFF(DAY, GP.StartTime, GETDATE()) <= 365) AND (GP.IsNew = 'Y') THEN 'Y' ELSE 'N' END) AS IsNewItem");
+            SBSql.AppendLine("    , (CASE WHEN (GP.IsNew = 'Z') THEN 'Z' ELSE 'N' END) AS IsRecItem");
             //是否已停售
             SBSql.AppendLine("    , (CASE WHEN GETDATE() > myData.Stop_Offer_Date THEN 'Y' ELSE 'N' END) AS IsStop");
             //圖片(判斷圖片中心 2->1->3->4->5->7->8->9)
@@ -285,6 +286,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
         {
             //取得資料
             string Get_IsNewItem = DataBinder.Eval(e.Item.DataItem, "IsNewItem").ToString();
+            string Get_IsRecItem = DataBinder.Eval(e.Item.DataItem, "IsRecItem").ToString();
             string Get_IsStop = DataBinder.Eval(e.Item.DataItem, "IsStop").ToString();
             string Get_ModelNo = DataBinder.Eval(e.Item.DataItem, "ModelNo").ToString();
             string Get_ModelName = DataBinder.Eval(e.Item.DataItem, "ModelName").ToString();
@@ -299,6 +301,13 @@ public partial class myProd_ProdList : System.Web.UI.Page
             {
                 PlaceHolder ph_NewItem = (PlaceHolder)e.Item.FindControl("ph_NewItem");
                 ph_NewItem.Visible = true;
+            }
+
+            //判斷是否為推薦
+            if (Get_IsRecItem.Equals("Z"))
+            {
+                PlaceHolder ph_RecmItem = (PlaceHolder)e.Item.FindControl("ph_RecmItem");
+                ph_RecmItem.Visible = true;
             }
 
             //判斷是否已停售

@@ -67,6 +67,7 @@ public partial class myProd_ProdView : System.Web.UI.Page
 
                 //是否為新品
                 SBSql.AppendLine(" , (CASE WHEN (DATEDIFF(DAY, GP.StartTime, GETDATE()) <= 365) AND (GP.IsNew = 'Y') THEN 'Y' ELSE 'N' END) AS IsNewItem");
+                SBSql.AppendLine(" , (CASE WHEN (GP.IsNew = 'Z') THEN 'Z' ELSE 'N' END) AS IsRecItem");
 
                 //是否已停售
                 SBSql.AppendLine(" , (CASE WHEN GETDATE() > myData.Stop_Offer_Date THEN 'Y' ELSE 'N' END) AS IsStop");
@@ -175,9 +176,12 @@ public partial class myProd_ProdView : System.Web.UI.Page
 
                     //標籤判斷
                     string IsNewItem = DT.Rows[0]["IsNewItem"].ToString();
+                    string IsRecItem = DT.Rows[0]["IsRecItem"].ToString();
                     string IsStop = DT.Rows[0]["IsStop"].ToString();
+                    
                     //是否為新品
                     this.ph_Label_New.Visible = IsNewItem.Equals("Y");
+                    ph_Label_Rec.Visible = IsRecItem.Equals("Z");
 
                     //是否停售
                     this.ph_Label_Stop.Visible = IsStop.Equals("Y");
