@@ -138,6 +138,12 @@
   <data name="txt_新品" xml:space="preserve">
     <value>新品</value>
   </data>
+  <data name="txt_未開賣" xml:space="preserve">
+    <value>产品上架处理中，请洽: 400-1099-508取得更多讯息，谢谢!</value>
+  </data>
+  <data name="txt_查看詳情" xml:space="preserve">
+    <value>查看详情</value>
+  </data>
   <data name="txt_特色下載" xml:space="preserve">
     <value>特色图片下载</value>
   </data>

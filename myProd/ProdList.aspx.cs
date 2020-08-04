@@ -110,10 +110,16 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine("      ) AS PhotoGroup ");
 
             SBSql.AppendLine("    , ROW_NUMBER() OVER (ORDER BY (CASE WHEN GETDATE() > myData.Stop_Offer_Date THEN 'Y' ELSE 'N' END), GP.IsNew DESC, GP.Sort ASC, GP.EndTime DESC) AS RowRank ");
-            //取得同品號在各區域是否有資料
+            //取得該品號在各區域是否有上架資料
             SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 1)) AreaGlobal");
             SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 2)) AreaTW");
             SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 3)) AreaCN");
+
+            //取得該品號在各區域是否有開賣資料
+            SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 1)) SellGlobal");
+            SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 2)) SellTW");
+            SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 3)) SellCN");
+
             SBSql.AppendLine("    FROM Prod GP ");
             SBSql.AppendLine("      INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No ");
             SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
@@ -296,6 +302,11 @@ public partial class myProd_ProdList : System.Web.UI.Page
             Int16 AreaTW = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "AreaTW"));
             Int16 AreaCN = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "AreaCN"));
 
+            //開賣判斷
+            Int16 SellGlobal = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellGlobal"));
+            Int16 SellTW = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellTW"));
+            Int16 SellCN = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellCN"));
+
             //判斷是否為新品
             if (Get_IsNewItem.Equals("Y"))
             {
@@ -317,7 +328,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
                 ph_Stop.Visible = true;
             }
 
-            //填入區域
+            //填入上架區域
             Literal lt_Area = (Literal)e.Item.FindControl("lt_Area");
             lt_Area.Text = GetArea_Icons(AreaGlobal, AreaTW, AreaCN);
 
@@ -330,27 +341,60 @@ public partial class myProd_ProdList : System.Web.UI.Page
              * frame ex: /Ajax_Data/Frame_GoBuy.aspx?area=CN&id=1PK-3179&name=%e6%92%ac%e6%a3%92%e5%b7%a5%e5%85%b75%e6%94%af%e7%b5%84
              */
             Literal lt_BuyUrl = (Literal)e.Item.FindControl("lt_BuyUrl");
-            if (Get_IsStop.Equals("Y"))
+
+            //未開賣訊息
+            bool _lockMsg = false;
+            switch (Req_CountryCode.ToUpper())
             {
-                //停售商品顯示與我們聯絡
-                lt_BuyUrl.Text = "<a class=\"btn btn-more doContact\" data-target=\"#myModalContact\" data-toggle=\"modal\" data-id=\"{0}\">{1}</a>".FormatThis(
-                    Get_ModelNo
-                    , this.GetLocalResourceObject("txt_停售說明").ToString());
+                case "TW":
+                    _lockMsg = SellTW > 0;
+                    break;
+
+                case "CN":
+                    _lockMsg = SellCN > 0;
+                    break;
+
+                default:
+                    _lockMsg = SellGlobal > 0;
+                    break;
+            }
+
+
+            if (_lockMsg)
+            {
+                //Show未開賣訊息
+                lt_BuyUrl.Text = "<a class=\"btn btn-more\" data-target=\"#myUnsell\" data-toggle=\"modal\" data-id=\"{0}\">{1}</a>".FormatThis(
+                        Get_ModelNo
+                        , this.GetLocalResourceObject("txt_查看詳情").ToString());
             }
             else
             {
-                string buyType = Req_BuyUrl[0];
-                string buyUrl = Req_BuyUrl[1];
-                if (!buyType.Equals("none"))
+                //停售判斷
+                if (Get_IsStop.Equals("Y"))
                 {
-                    string btnBuyUrl = fn_Param.Get_BuyRedirectUrl(buyType, buyUrl, _CountryCode, Get_ModelNo, Get_ModelName);
+                    //停售商品顯示與我們聯絡
+                    lt_BuyUrl.Text = "<a class=\"btn btn-more doContact\" data-target=\"#myModalContact\" data-toggle=\"modal\" data-id=\"{0}\">{1}</a>".FormatThis(
+                        Get_ModelNo
+                        , this.GetLocalResourceObject("txt_停售說明").ToString());
+                }
+                else
+                {
+                    /*
+                     * 偵測ip, 取得對應的區域URL
+                     */
+                    string buyType = Req_BuyUrl[0];
+                    string buyUrl = Req_BuyUrl[1];
+                    if (!buyType.Equals("none"))
+                    {
+                        string btnBuyUrl = fn_Param.Get_BuyRedirectUrl(buyType, buyUrl, _CountryCode, Get_ModelNo, Get_ModelName);
 
-                    lt_BuyUrl.Text = "<a href=\"{0}\" class=\"btn btn-buy {3}\" {1}>{2}</a>".FormatThis(
-                            btnBuyUrl
-                            , buyType.Equals("frame") ? "data-toggle=\"modal\" data-target=\"#remoteModal-{0}\" data-id=\"{0}\" data-name=\"{1}\"".FormatThis(Get_ModelNo, HttpUtility.UrlEncode(Get_ModelName)) : "target=\"_blank\""
-                            , this.GetLocalResourceObject("txt_立即購買").ToString()
-                            , buyType.Equals("frame") ? "doRemoteUrl" : ""
-                        );
+                        lt_BuyUrl.Text = "<a href=\"{0}\" class=\"btn btn-buy {3}\" {1}>{2}</a>".FormatThis(
+                                btnBuyUrl
+                                , buyType.Equals("frame") ? "data-toggle=\"modal\" data-target=\"#remoteModal-{0}\" data-id=\"{0}\" data-name=\"{1}\"".FormatThis(Get_ModelNo, HttpUtility.UrlEncode(Get_ModelName)) : "target=\"_blank\""
+                                , this.GetLocalResourceObject("txt_立即購買").ToString()
+                                , buyType.Equals("frame") ? "doRemoteUrl" : ""
+                            );
+                    }
                 }
             }
 

@@ -168,4 +168,7 @@
   <data name="txt_推薦" xml:space="preserve">
     <value>推薦</value>
   </data>
+  <data name="txt_未開賣" xml:space="preserve">
+    <value>产品上架处理中，请洽: 400-1099-508取得更多讯息，谢谢!</value>
+  </data>
 </root>

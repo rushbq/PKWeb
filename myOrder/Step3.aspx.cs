@@ -316,11 +316,18 @@ public partial class myOrder_Step3 : SecurityCheckDealer
             List<string> emailTo = new List<string>();
             eOrderingRepository _mailData = new eOrderingRepository();
 
-            var mailList = _mailData.GetMailList(query.CustID);
-            foreach (var mailto in mailList)
-            {
-                emailTo.Add(mailto.MailAddress);
-            }
+            //該客戶所屬業務人員的部門EMAIL
+            //var mailList = _mailData.GetMailList(query.CustID);
+            //foreach (var mailto in mailList)
+            //{
+            //    emailTo.Add(mailto.MailAddress);
+            //}
+
+            //發給指定對象(2020/7/20 #99-20200720-0003)
+            emailTo.Add("szsales@mail.prokits.com.tw");
+            emailTo.Add("SH_Sales@mail.prokits.com.tw");
+            emailTo.Add("SH_OPTeam@mail.prokits.com.tw");
+            emailTo.Add("opteam@mail.prokits.com.tw");
 
             //固定傳送MAIL:系統收件箱
             emailTo.Add("ITInform@mail.prokits.com.tw");

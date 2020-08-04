@@ -141,6 +141,12 @@
   <data name="txt_新品" xml:space="preserve">
     <value>New</value>
   </data>
+  <data name="txt_未開賣" xml:space="preserve">
+    <value>Please contact sales team for more information. Tel. +886-2-2218-3233</value>
+  </data>
+  <data name="txt_查看詳情" xml:space="preserve">
+    <value>View details</value>
+  </data>
   <data name="txt_特色下載" xml:space="preserve">
     <value>Get Feature Images</value>
   </data>

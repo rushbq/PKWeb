@@ -173,6 +173,27 @@
             </div>
         </div>
         <!-- Modal Contact us E -->
+
+        <!-- Modal unSell S -->
+        <div class="modal fade" id="myUnsell" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div class="page-title">
+                            <div class="header">Information</div>
+                        </div>
+                        <p class="contact-description">
+                            <%=this.GetLocalResourceObject("txt_未開賣").ToString()%>
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal unSell E -->
     </div>
 </asp:Content>
 <asp:Content ID="myScript" ContentPlaceHolderID="ScriptContent" runat="Server">
@@ -217,8 +238,8 @@
                 //show model
                 $("#showTargetModel").text(_model);
                 $("#MainContent_hf_ModelNo").val(_model);
-
             });
+
 
             /* 驗證碼 */
             $('#chg-Verify').click(function () {

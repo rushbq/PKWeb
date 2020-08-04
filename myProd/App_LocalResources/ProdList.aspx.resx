@@ -166,6 +166,9 @@
     <value>Sold out. Please click and contact us</value>
   </data>
   <data name="txt_推薦" xml:space="preserve">
-    <value>推薦</value>
+    <value>Recommend</value>
+  </data>
+  <data name="txt_未開賣" xml:space="preserve">
+    <value>Please contact sales team for more information. Tel. +886-2-2218-3233</value>
   </data>
 </root>

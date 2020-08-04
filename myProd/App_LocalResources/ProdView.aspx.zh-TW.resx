@@ -138,6 +138,12 @@
   <data name="txt_新品" xml:space="preserve">
     <value>新品</value>
   </data>
+  <data name="txt_未開賣" xml:space="preserve">
+    <value>產品上架處理中，請洽02-2218-3233分機329取得更多訊息，謝謝!</value>
+  </data>
+  <data name="txt_查看詳情" xml:space="preserve">
+    <value>查看詳情</value>
+  </data>
   <data name="txt_特色下載" xml:space="preserve">
     <value>特色圖片下載</value>
   </data>

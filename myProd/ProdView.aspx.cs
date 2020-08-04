@@ -84,10 +84,15 @@ public partial class myProd_ProdView : System.Web.UI.Page
                 SBSql.AppendLine("    ORDER BY ProdPic_Group.Sort ASC, ProdPic_Group.Create_Time DESC, ProdPic_Group.Update_Time DESC ");
                 SBSql.AppendLine("   ) AS SpecPic ");
 
-                //取得同品號在各區域是否有資料
+                //取得該品號在各區域是否有上架資料
                 SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 1)) AreaGlobal");
                 SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 2)) AreaTW");
                 SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_Area WHERE (Model_No = GP.Model_No) AND (AreaCode = 3)) AreaCN");
+
+                //取得該品號在各區域是否有開賣資料
+                SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 1)) SellGlobal");
+                SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 2)) SellTW");
+                SBSql.AppendLine(" , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 3)) SellCN");
 
                 //判斷是否有下載
                 SBSql.AppendLine(" , (SELECT COUNT(*) FROM [PKEF].[dbo].File_Rel_ModelNo WHERE (Model_No = GP.Model_No)) AS CntDwFile");
@@ -168,6 +173,11 @@ public partial class myProd_ProdView : System.Web.UI.Page
                     AreaCN = Convert.ToInt16(DT.Rows[0]["AreaCN"]);
                     this.lt_Area.Text = GetArea_Icons(AreaGlobal, AreaTW, AreaCN);
 
+                    //開賣判斷
+                    Int16 SellGlobal = Convert.ToInt16(DT.Rows[0]["SellGlobal"]);
+                    Int16 SellTW = Convert.ToInt16(DT.Rows[0]["SellTW"]);
+                    Int16 SellCN = Convert.ToInt16(DT.Rows[0]["SellCN"]);
+
                     //規格符號 + 認證符號
                     this.lt_Icons.Text = GetData_SpecIcons() + GetData_CertIcons();
 
@@ -178,7 +188,7 @@ public partial class myProd_ProdView : System.Web.UI.Page
                     string IsNewItem = DT.Rows[0]["IsNewItem"].ToString();
                     string IsRecItem = DT.Rows[0]["IsRecItem"].ToString();
                     string IsStop = DT.Rows[0]["IsStop"].ToString();
-                    
+
                     //是否為新品
                     this.ph_Label_New.Visible = IsNewItem.Equals("Y");
                     ph_Label_Rec.Visible = IsRecItem.Equals("Z");
@@ -266,28 +276,57 @@ public partial class myProd_ProdView : System.Web.UI.Page
                       * type=frame:有多選項, 開小視窗提供選擇
                       * 停售商品 = Y, Contact us表單
                       */
-                    if (IsStop.Equals("Y"))
+
+                    //未開賣訊息
+                    bool _lockMsg = false;
+                    switch (Req_CountryCode.ToUpper())
                     {
-                        //停售商品顯示與我們聯絡
-                        //lt_BuyUrl.Text = "<a class=\"btn btn-more doContact\" data-target=\"#myModalContact\" data-toggle=\"modal\" data-id=\"{0}\" style=\"margin-bottom:10px;\">此商品售完，請聯絡我們</a>".FormatThis(
-                        //    Model_No);
+                        case "TW":
+                            _lockMsg = SellTW > 0;
+                            break;
+
+                        case "CN":
+                            _lockMsg = SellCN > 0;
+                            break;
+
+                        default:
+                            _lockMsg = SellGlobal > 0;
+                            break;
+                    }
+
+                    if (_lockMsg)
+                    {
+                        //Show未開賣訊息
+                        lt_BuyUrl.Text = "<a class=\"btn btn-more\" data-target=\"#myUnsell\" data-toggle=\"modal\" data-id=\"{0}\">{1}</a>".FormatThis(
+                                Model_No
+                                , this.GetLocalResourceObject("txt_查看詳情").ToString());
                     }
                     else
                     {
-                        string buyType = Req_BuyUrl[0];
-                        string buyUrl = Req_BuyUrl[1];
-                        if (!buyType.Equals("none"))
+                        //停售判斷
+                        if (IsStop.Equals("Y"))
                         {
-                            string btnBuyUrl = fn_Param.Get_BuyRedirectUrl(buyType, buyUrl, Req_CountryCode, Model_No, ModelName);
-
-                            lt_BuyUrl.Text = "<a href=\"{0}\" class=\"btn btn-buy {3}\" {1} style=\"margin-bottom:10px;\">{2}</a>".FormatThis(
-                                           btnBuyUrl
-                                           , buyType.Equals("frame") ? "data-toggle=\"modal\" data-target=\"#remoteModal-{0}\" data-id=\"{0}\" data-name=\"{1}\"".FormatThis(Model_No, HttpUtility.UrlEncode(ModelName)) : "target=\"_blank\""
-                                           , this.GetLocalResourceObject("txt_立即購買").ToString()
-                                           , buyType.Equals("frame") ? "doRemoteUrl" : ""
-                                       );
+                            //停售商品顯示與我們聯絡
+                            //lt_BuyUrl.Text = "<a class=\"btn btn-more doContact\" data-target=\"#myModalContact\" data-toggle=\"modal\" data-id=\"{0}\" style=\"margin-bottom:10px;\">此商品售完，請聯絡我們</a>".FormatThis(
+                            //    Model_No);
                         }
+                        else
+                        {
+                            string buyType = Req_BuyUrl[0];
+                            string buyUrl = Req_BuyUrl[1];
+                            if (!buyType.Equals("none"))
+                            {
+                                string btnBuyUrl = fn_Param.Get_BuyRedirectUrl(buyType, buyUrl, Req_CountryCode, Model_No, ModelName);
 
+                                lt_BuyUrl.Text = "<a href=\"{0}\" class=\"btn btn-buy {3}\" {1} style=\"margin-bottom:10px;\">{2}</a>".FormatThis(
+                                               btnBuyUrl
+                                               , buyType.Equals("frame") ? "data-toggle=\"modal\" data-target=\"#remoteModal-{0}\" data-id=\"{0}\" data-name=\"{1}\"".FormatThis(Model_No, HttpUtility.UrlEncode(ModelName)) : "target=\"_blank\""
+                                               , this.GetLocalResourceObject("txt_立即購買").ToString()
+                                               , buyType.Equals("frame") ? "doRemoteUrl" : ""
+                                           );
+                            }
+
+                        }
                     }
 
 
