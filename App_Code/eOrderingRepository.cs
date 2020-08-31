@@ -1132,7 +1132,8 @@ namespace eOrder.Controllers
                     sql.AppendLine("  , DT.StockStatus AS XA002");
 
                     //單別
-                    sql.AppendLine("  , (SELECT Param_Value FROM PKSYS.dbo.Param_Public WHERE (Param_Kind = 'EDI_單別') AND (UPPER(Param_Name) = UPPER(Corp.DB_Name))) AS XA003");
+                    //sql.AppendLine("  , (SELECT Param_Value FROM PKSYS.dbo.Param_Public WHERE (Param_Kind = 'EDI_單別') AND (UPPER(Param_Name) = UPPER(Corp.DB_Name))) AS XA003");
+                    sql.AppendLine("  , '22B2' AS XA003");
                     sql.AppendLine("  , LEFT(DT.OrderID, 40) AS XA006");    //平台單號 (訂單號)
                     sql.AppendLine("  , Base.CustID AS XA007"); //客戶代號
                     sql.AppendLine("  , RTRIM(Cust.MA016) AS XA008");   //ERP業務人員ID
