@@ -531,4 +531,21 @@ public class fn_Param
         }
     }
     private static string _Get_CustID;
+
+
+    /// <summary>
+    /// 系統收件箱
+    /// </summary>
+    public static string SysMail_Inform
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Inform"];
+        }
+        private set
+        {
+            _SysMail_Inform = value;
+        }
+    }
+    private static string _SysMail_Inform;
 }

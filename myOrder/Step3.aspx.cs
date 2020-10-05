@@ -330,8 +330,9 @@ public partial class myOrder_Step3 : SecurityCheckDealer
             emailTo.Add("opteam@mail.prokits.com.tw");
 
             //固定傳送MAIL:系統收件箱
-            emailTo.Add("ITInform@mail.prokits.com.tw");
+            emailTo.Add(fn_Param.SysMail_Inform);
 
+            //Set reciever
             fn_Mail.Reciever = emailTo;
 
 
