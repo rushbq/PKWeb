@@ -124,7 +124,7 @@ namespace ExtensionUI
         }
 
         /// <summary>
-        /// 取得產品分類 (for DropDownList)
+        /// 取得產品分類 (for DropDownList) - Tools
         /// </summary>
         /// <param name="setMenu">控制項</param>
         /// <param name="inputValue">輸入值</param>
@@ -190,7 +190,7 @@ namespace ExtensionUI
         }
 
         /// <summary>
-        /// 取得產品分類名稱
+        /// 取得產品分類名稱-Tools
         /// </summary>
         /// <param name="inputValue">輸入值</param>
         /// <param name="lang">語系</param>
@@ -209,6 +209,119 @@ namespace ExtensionUI
                     // ↓↓ SQL查詢組成 ↓↓
                     SBSql.AppendLine(" SELECT Cls.Class_Name_{0} AS Label ".FormatThis(lang));
                     SBSql.AppendLine(" FROM Prod_Class Cls WITH (NOLOCK) ");
+                    SBSql.AppendLine(" WHERE (Cls.Display = 'Y') AND (Cls.Display_PKWeb = 'Y') AND (Cls.Class_ID = @Class_ID) ");
+                    cmd.CommandText = SBSql.ToString();
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("Class_ID", inputValue);
+                    // ↑↑ SQL查詢組成 ↑↑
+
+                    // SQL查詢執行
+                    using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.Product, out ErrMsg))
+                    {
+                        if (DT.Rows.Count == 0)
+                        {
+                            return "";
+                        }
+                        else
+                        {
+                            return DT.Rows[0]["Label"].ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+
+        /// <summary>
+        /// 取得產品分類 (for DropDownList) - Toy
+        /// </summary>
+        /// <param name="setMenu">控制項</param>
+        /// <param name="inputValue">輸入值</param>
+        /// <param name="lang">語系</param>
+        /// <param name="showRoot">是否顯示索引文字</param>
+        /// <param name="ErrMsg">錯誤訊息</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// DB = ProductCenter
+        /// </remarks>
+        public static bool Get_ProdToyClass(DropDownList setMenu, string inputValue, string lang, bool showRoot, string rootName, out string ErrMsg)
+        {
+            //清除參數
+            ErrMsg = "";
+            setMenu.Items.Clear();
+
+            try
+            {
+                //[取得資料]
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    StringBuilder SBSql = new StringBuilder();
+
+                    // ↓↓ SQL查詢組成 ↓↓
+                    SBSql.AppendLine(" SELECT RTRIM(Cls.Class_ID) AS ID, Cls.Class_Name_{0} AS Label ".FormatThis(lang));
+                    SBSql.AppendLine(" FROM ProdToy_Class Cls WITH (NOLOCK) ");
+                    SBSql.AppendLine(" WHERE (Cls.Display = 'Y') AND (Cls.Display_PKWeb = 'Y') ");
+                    SBSql.AppendLine(" ORDER BY Cls.Sort, Cls.Class_ID");
+                    cmd.CommandText = SBSql.ToString();
+                    // ↑↑ SQL查詢組成 ↑↑
+
+                    // SQL查詢執行
+                    using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.Product, out ErrMsg))
+                    {
+                        //新增選單項目
+                        for (int row = 0; row < DT.Rows.Count; row++)
+                        {
+                            setMenu.Items.Add(new ListItem(DT.Rows[row]["Label"].ToString()
+                                         , DT.Rows[row]["ID"].ToString()));
+                        }
+                        //判斷是否有已選取的項目
+                        if (false == string.IsNullOrEmpty(inputValue))
+                        {
+                            setMenu.SelectedIndex = setMenu.Items.IndexOf(setMenu.Items.FindByValue(inputValue.ToString().Trim()));
+                        }
+                        //判斷是否要顯示索引文字
+                        if (showRoot)
+                        {
+                            setMenu.Items.Insert(0, new ListItem("-- {0} --".FormatThis(
+                                string.IsNullOrEmpty(rootName) ? "ALL" : rootName
+                                ), ""));
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrMsg = ex.Message.ToString();
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 取得產品分類名稱-Toy
+        /// </summary>
+        /// <param name="inputValue">輸入值</param>
+        /// <param name="lang">語系</param>
+        /// <returns></returns>
+        public static string Get_ProdToyClassName(string inputValue, string lang)
+        {
+            string ErrMsg;
+
+            try
+            {
+                //[取得資料]
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    StringBuilder SBSql = new StringBuilder();
+
+                    // ↓↓ SQL查詢組成 ↓↓
+                    SBSql.AppendLine(" SELECT Cls.Class_Name_{0} AS Label ".FormatThis(lang));
+                    SBSql.AppendLine(" FROM ProdToy_Class Cls WITH (NOLOCK) ");
                     SBSql.AppendLine(" WHERE (Cls.Display = 'Y') AND (Cls.Display_PKWeb = 'Y') AND (Cls.Class_ID = @Class_ID) ");
                     cmd.CommandText = SBSql.ToString();
                     cmd.Parameters.Clear();

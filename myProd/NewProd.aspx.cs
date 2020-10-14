@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -13,9 +11,9 @@ using ExtensionMethods;
 using ExtensionUI;
 
 /*
- * 工具產品
+ * 工具產品-New
  */
-public partial class myProd_ProdList : System.Web.UI.Page
+public partial class myProd_NewProd : System.Web.UI.Page
 {
     public string ErrMsg;
     //以IP判斷國家區碼
@@ -28,7 +26,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
             if (!IsPostBack)
             {
                 //** 次標題 **
-                this.Page.Title = Resources.resPublic.title_工具專區;
+                this.Page.Title = Resources.resPublic.title_NewProd_Tool;
 
                 this.btn_Search.Text = Resources.resPublic.btn_查詢;
                 this.tb_Keyword.Attributes.Add("placeholder", this.GetLocalResourceObject("tip_關鍵字").ToString());
@@ -77,7 +75,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
         try
         {
             //[參數宣告] - 設定本頁Url(末端無須加 "/")
-            this.ViewState["Page_Url"] = "{0}Products/{1}".FormatThis(
+            this.ViewState["Page_Url"] = "{0}NewProd/{1}".FormatThis(
                     Application["WebUrl"]
                     , (string.IsNullOrEmpty(Req_ClassID)) ? "ALL" : Req_ClassID
                 );
@@ -125,7 +123,8 @@ public partial class myProd_ProdList : System.Web.UI.Page
 
             SBSql.AppendLine("    FROM Prod GP ");
             SBSql.AppendLine("      INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No ");
-            SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
+            //filter:新品專區
+            SBSql.AppendLine(" WHERE (GP.Display = 'Y') AND (GP.IsNew = 'Y')");
             SBSql.AppendLine("   AND (GETDATE() >= GP.StartTime) AND (GETDATE() <= GP.EndTime)");
 
             #region "..查詢條件.."
@@ -189,7 +188,8 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine("     SELECT GP.Model_No");
             SBSql.AppendLine("     FROM Prod GP");
             SBSql.AppendLine("     INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No ");
-            SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
+            //filter:新品專區
+            SBSql.AppendLine(" WHERE (GP.Display = 'Y') AND (GP.IsNew = 'Y')");
             SBSql.AppendLine("   AND (GETDATE() >= GP.StartTime) AND (GETDATE() <= GP.EndTime)");
 
             #region "..查詢條件.."
@@ -310,19 +310,19 @@ public partial class myProd_ProdList : System.Web.UI.Page
             Int16 SellTW = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellTW"));
             Int16 SellCN = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellCN"));
 
-            //判斷是否為新品
-            if (Get_IsNewItem.Equals("Y"))
-            {
-                PlaceHolder ph_NewItem = (PlaceHolder)e.Item.FindControl("ph_NewItem");
-                ph_NewItem.Visible = true;
-            }
+            ////判斷是否為新品
+            //if (Get_IsNewItem.Equals("Y"))
+            //{
+            //    PlaceHolder ph_NewItem = (PlaceHolder)e.Item.FindControl("ph_NewItem");
+            //    ph_NewItem.Visible = true;
+            //}
 
-            //判斷是否為推薦
-            if (Get_IsRecItem.Equals("Z"))
-            {
-                PlaceHolder ph_RecmItem = (PlaceHolder)e.Item.FindControl("ph_RecmItem");
-                ph_RecmItem.Visible = true;
-            }
+            ////判斷是否為推薦
+            //if (Get_IsRecItem.Equals("Z"))
+            //{
+            //    PlaceHolder ph_RecmItem = (PlaceHolder)e.Item.FindControl("ph_RecmItem");
+            //    ph_RecmItem.Visible = true;
+            //}
 
             //判斷是否已停售
             if (Get_IsStop.Equals("Y"))
@@ -489,7 +489,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
         try
         {
             StringBuilder SBUrl = new StringBuilder();
-            SBUrl.Append("{0}Products/{1}/".FormatThis(
+            SBUrl.Append("{0}NewProd/{1}/".FormatThis(
                     Application["WebUrl"]
                     , (this.ddl_ProdClass.SelectedIndex > 0) ? this.ddl_ProdClass.SelectedValue : "ALL"
                 ));

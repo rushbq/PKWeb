@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Products" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="ProdList.aspx.cs" Inherits="myProd_ProdList" %>
+﻿<%@ Page Title="HotProd" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="HotProd.aspx.cs" Inherits="myProd_HotProd" %>
 
 
 <%@ Import Namespace="ExtensionMethods" %>
@@ -8,7 +8,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="container df-container-margin">
         <div class="page-header">
-            <h3><%=Resources.resPublic.title_工具專區 %>
+            <h3><%=Resources.resPublic.title_HotProd_Tool %>
                 &nbsp;<small><%=ClassName %></small>
             </h3>
         </div>

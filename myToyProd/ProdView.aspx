@@ -24,7 +24,7 @@
         <%--<ucNavi:Ascx_Navi ID="Ascx_Navi1" runat="server" Param_CurrID="102" />--%>
         <div>
             <ol class="breadcrumb">
-                <li><a><%=Resources.resPublic.title_工具專區 %></a></li>
+                <li><a><%=Resources.resPublic.title_科學玩具 %></a></li>
                 <asp:Literal ID="lt_navbar" runat="server"></asp:Literal>
             </ol>
         </div>

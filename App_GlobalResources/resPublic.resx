@@ -347,4 +347,22 @@ Mail ： sha@mail.prokits.com.tw</value>
   <data name="txt_CompanyName" xml:space="preserve">
     <value>寶工實業股份有限公司</value>
   </data>
+  <data name="title_工具專區" xml:space="preserve">
+    <value>Tools Solutions</value>
+  </data>
+  <data name="title_科學玩具" xml:space="preserve">
+    <value>Science Kits</value>
+  </data>
+  <data name="title_HotProd_Tool" xml:space="preserve">
+    <value>Tools Solutions - Hot Sale</value>
+  </data>
+  <data name="title_HotProd_Toy" xml:space="preserve">
+    <value>Science Kits - Hot Sale</value>
+  </data>
+  <data name="title_NewProd_Tool" xml:space="preserve">
+    <value>Tools Solutions - New Arrival</value>
+  </data>
+  <data name="title_NewProd_Toy" xml:space="preserve">
+    <value>Science Kits - New Arrival</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Products" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="ProdList.aspx.cs" Inherits="myProd_ProdList" %>
+﻿<%@ Page Title="RobotKits" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="NewProd.aspx.cs" Inherits="myToyProd_ProdList" %>
 
 
 <%@ Import Namespace="ExtensionMethods" %>
@@ -8,7 +8,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="container df-container-margin">
         <div class="page-header">
-            <h3><%=Resources.resPublic.title_工具專區 %>
+            <h3><%=Resources.resPublic.title_NewProd_Toy %>
                 &nbsp;<small><%=ClassName %></small>
             </h3>
         </div>
@@ -70,7 +70,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                         <div class="image-container">
-                                            <a href="<%=Application["WebUrl"] %>Product/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/" title="<%# fn_stringFormat.Set_FilterHtml(Eval("ModelName").ToString()) %>">
+                                            <a href="<%=Application["WebUrl"] %>RobotKit/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/" title="<%# fn_stringFormat.Set_FilterHtml(Eval("ModelName").ToString()) %>">
                                                 <%# Get_Pic(Eval("PhotoGroup").ToString(), Eval("ModelNo").ToString()) %>
                                             </a>
                                         </div>
@@ -84,8 +84,8 @@
                                         </div>
 
                                         <div class="content">
-                                            <p class="title"><a href="<%=Application["WebUrl"] %>Product/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/"><%#Eval("ModelNo") %></a></p>
-                                            <p class="name"><a href="<%=Application["WebUrl"] %>Product/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/"><%#Eval("ModelName") %></a></p>
+                                            <p class="title"><a href="<%=Application["WebUrl"] %>RobotKit/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/"><%#Eval("ModelNo") %></a></p>
+                                            <p class="name"><a href="<%=Application["WebUrl"] %>RobotKit/<%#Server.UrlEncode(Eval("ModelNo").ToString()) %>/"><%#Eval("ModelName") %></a></p>
                                         </div>
                                         <!-- 立即購買 -->
                                         <div class="btn-bord">
@@ -252,7 +252,7 @@
                 var _name = $(this).attr("data-name");   //品名
                 var _target = $(this).attr("data-target");
 
-                //load html
+                //load html (目前中國區才有多個平台)
                 var url = '<%=Application["WebUrl"]%>' + "Ajax_Data/Frame_GoBuy.aspx?area=CN&id=" + encodeURIComponent(id) + "&name=" + _name;
                 var datablock = $(_target);
                 datablock.empty();

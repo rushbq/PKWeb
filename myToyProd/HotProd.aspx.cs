@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -13,9 +11,9 @@ using ExtensionMethods;
 using ExtensionUI;
 
 /*
- * 工具產品
+ * 科玩產品-Hot
  */
-public partial class myProd_ProdList : System.Web.UI.Page
+public partial class myToyProd_ProdList : System.Web.UI.Page
 {
     public string ErrMsg;
     //以IP判斷國家區碼
@@ -28,15 +26,15 @@ public partial class myProd_ProdList : System.Web.UI.Page
             if (!IsPostBack)
             {
                 //** 次標題 **
-                this.Page.Title = Resources.resPublic.title_工具專區;
+                this.Page.Title = Resources.resPublic.title_HotProd_Toy;
 
                 this.btn_Search.Text = Resources.resPublic.btn_查詢;
                 this.tb_Keyword.Attributes.Add("placeholder", this.GetLocalResourceObject("tip_關鍵字").ToString());
                 this.img_Verify.ImageUrl = Application["WebUrl"] + "myHandler/Ashx_CreateValidImg.ashx";
                 tb_VerifyCode.Attributes.Add("placeholder", this.GetLocalResourceObject("txt_Verify").ToString());
 
-                //[取得/檢查參數] - 產品類別
-                if (fn_CustomUI.Get_ProdClass(this.ddl_ProdClass, Req_ClassID, fn_Language.Param_Lang, true, this.GetLocalResourceObject("tip_所有類別").ToString(), out ErrMsg) == false)
+                //[取得/檢查參數] - 產品類別(TOY)
+                if (fn_CustomUI.Get_ProdToyClass(this.ddl_ProdClass, Req_ClassID, fn_Language.Param_Lang, true, this.GetLocalResourceObject("tip_所有類別").ToString(), out ErrMsg) == false)
                 {
                     this.ddl_ProdClass.Items.Insert(0, new ListItem("empty item", ""));
                 }
@@ -77,7 +75,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
         try
         {
             //[參數宣告] - 設定本頁Url(末端無須加 "/")
-            this.ViewState["Page_Url"] = "{0}Products/{1}".FormatThis(
+            this.ViewState["Page_Url"] = "{0}HotRobot/{1}".FormatThis(
                     Application["WebUrl"]
                     , (string.IsNullOrEmpty(Req_ClassID)) ? "ALL" : Req_ClassID
                 );
@@ -124,19 +122,26 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine("    , (SELECT COUNT(*) FROM Prod_Rel_SellArea WHERE (Model_No = GP.Model_No) AND (AreaCode = 3)) SellCN");
 
             SBSql.AppendLine("    FROM Prod GP ");
-            SBSql.AppendLine("      INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No ");
-            SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
+            SBSql.AppendLine("      INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No");
+            //filter:熱銷推薦
+            SBSql.AppendLine(" WHERE (GP.Display = 'Y') AND (GP.IsNew = 'Z')");
             SBSql.AppendLine("   AND (GETDATE() >= GP.StartTime) AND (GETDATE() <= GP.EndTime)");
 
             #region "..查詢條件.."
 
-            //[查詢條件] - 產品類別
+            //Toy關聯
+            SBSql.AppendLine(" AND (myData.Model_No IN (");
+            SBSql.AppendLine("  SELECT Rel.Model_No");
+            SBSql.AppendLine("  FROM [ProductCenter].dbo.ProdToy_Class_Rel_ModelNo Rel");
+            //[查詢條件] - 產品類別(TOY)
             if (!string.IsNullOrEmpty(Req_ClassID) && (!Req_ClassID.ToUpper().Equals("ALL")))
             {
-                SBSql.Append(" AND (myData.Class_ID = @Class_ID)");
+                SBSql.Append(" WHERE (Rel.Class_ID = @Class_ID)");
                 cmd.Parameters.AddWithValue("Class_ID", Req_ClassID);
 
             }
+            SBSql.AppendLine(" ))");
+
 
             //[查詢條件] - 關鍵字
             if (!string.IsNullOrEmpty(Req_Keyword))
@@ -188,18 +193,25 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine(" SELECT COUNT(*) FROM (");
             SBSql.AppendLine("     SELECT GP.Model_No");
             SBSql.AppendLine("     FROM Prod GP");
-            SBSql.AppendLine("     INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No ");
-            SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
+            SBSql.AppendLine("     INNER JOIN [ProductCenter].dbo.Prod_Item myData WITH (NOLOCK) ON GP.Model_No = myData.Model_No");
+            //filter:熱銷推薦
+            SBSql.AppendLine(" WHERE (GP.Display = 'Y') AND (GP.IsNew = 'Z')");
             SBSql.AppendLine("   AND (GETDATE() >= GP.StartTime) AND (GETDATE() <= GP.EndTime)");
 
             #region "..查詢條件.."
 
-            //[查詢條件] - 產品類別
+            //Toy關聯
+            SBSql.AppendLine(" AND (myData.Model_No IN (");
+            SBSql.AppendLine("  SELECT Rel.Model_No");
+            SBSql.AppendLine("  FROM [ProductCenter].dbo.ProdToy_Class_Rel_ModelNo Rel");
+            //[查詢條件] - 產品類別(TOY)
             if (!string.IsNullOrEmpty(Req_ClassID) && (!Req_ClassID.ToUpper().Equals("ALL")))
             {
-                SBSql.Append(" AND (myData.Class_ID = @Class_ID)");
+                SBSql.Append(" WHERE (Rel.Class_ID = @Class_ID)");
                 cmdTotalCnt.Parameters.AddWithValue("Class_ID", Req_ClassID);
+
             }
+            SBSql.AppendLine(" ))");
 
             //[查詢條件] - 關鍵字
             if (!string.IsNullOrEmpty(Req_Keyword))
@@ -228,10 +240,10 @@ public partial class myProd_ProdList : System.Web.UI.Page
                 cmdTotalCnt.Parameters.AddWithValue("Lang", fn_Language.PKWeb_Lang);
             }
 
-            //20170503
-            SBSql.AppendLine("     GROUP BY GP.Model_No");
-            SBSql.AppendLine(") AS TbCnt");
             #endregion
+
+            SBSql.AppendLine("   GROUP BY GP.Model_No");
+            SBSql.AppendLine(") AS TbCnt");
 
             //[SQL] - Command
             cmdTotalCnt.CommandText = SBSql.ToString();
@@ -310,19 +322,19 @@ public partial class myProd_ProdList : System.Web.UI.Page
             Int16 SellTW = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellTW"));
             Int16 SellCN = Convert.ToInt16(DataBinder.Eval(e.Item.DataItem, "SellCN"));
 
-            //判斷是否為新品
-            if (Get_IsNewItem.Equals("Y"))
-            {
-                PlaceHolder ph_NewItem = (PlaceHolder)e.Item.FindControl("ph_NewItem");
-                ph_NewItem.Visible = true;
-            }
+            ////判斷是否為新品
+            //if (Get_IsNewItem.Equals("Y"))
+            //{
+            //    PlaceHolder ph_NewItem = (PlaceHolder)e.Item.FindControl("ph_NewItem");
+            //    ph_NewItem.Visible = true;
+            //}
 
-            //判斷是否為推薦
-            if (Get_IsRecItem.Equals("Z"))
-            {
-                PlaceHolder ph_RecmItem = (PlaceHolder)e.Item.FindControl("ph_RecmItem");
-                ph_RecmItem.Visible = true;
-            }
+            ////判斷是否為推薦
+            //if (Get_IsRecItem.Equals("Z"))
+            //{
+            //    PlaceHolder ph_RecmItem = (PlaceHolder)e.Item.FindControl("ph_RecmItem");
+            //    ph_RecmItem.Visible = true;
+            //}
 
             //判斷是否已停售
             if (Get_IsStop.Equals("Y"))
@@ -439,17 +451,13 @@ public partial class myProd_ProdList : System.Web.UI.Page
         }
         else
         {
-            //實際檔案資料夾路徑
+            //實際檔案資料夾路徑(圖片中心的縮圖)
             string fileRealPath = string.Format("ProductPic/{0}/{1}/{2}"
                 , Model_No
                 , "1"
                 , "500x500_{0}".FormatThis(Photo));
 
-            //下載路徑 
-            //string downloadPath = "<img data-original=\"{0}\" src=\"{1}js/lazyload/grey.gif\" class=\"lazy img-responsive\" alt=\"\" />".FormatThis(
-            //        fn_stringFormat.ashx_Pic(fileRealPath)
-            //        , Application["WebUrl"]
-            //    );
+            //下載路徑
             string downloadPath = "<img data-original=\"{0}\" src=\"{1}js/lazyload/grey.gif\" class=\"lazy img-responsive\" alt=\"\" />".FormatThis(
                    Application["File_WebUrl"] + fileRealPath
                     , Application["WebUrl"]
@@ -489,7 +497,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
         try
         {
             StringBuilder SBUrl = new StringBuilder();
-            SBUrl.Append("{0}Products/{1}/".FormatThis(
+            SBUrl.Append("{0}HotRobot/{1}/".FormatThis(
                     Application["WebUrl"]
                     , (this.ddl_ProdClass.SelectedIndex > 0) ? this.ddl_ProdClass.SelectedValue : "ALL"
                 ));

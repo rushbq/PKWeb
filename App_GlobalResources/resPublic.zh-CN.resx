@@ -356,4 +356,22 @@ Mail：sha@mail.prokits.com.tw</value>
   <data name="txt_CompanyName" xml:space="preserve">
     <value>Prokit's Industries Co. LTD.</value>
   </data>
+  <data name="title_工具專區" xml:space="preserve">
+    <value>工具专区</value>
+  </data>
+  <data name="title_科學玩具" xml:space="preserve">
+    <value>科学玩具</value>
+  </data>
+  <data name="title_HotProd_Tool" xml:space="preserve">
+    <value>工具专区 - 热销推荐</value>
+  </data>
+  <data name="title_HotProd_Toy" xml:space="preserve">
+    <value>科学玩具 - 热销推荐</value>
+  </data>
+  <data name="title_NewProd_Tool" xml:space="preserve">
+    <value>工具专区 - 新品专区</value>
+  </data>
+  <data name="title_NewProd_Toy" xml:space="preserve">
+    <value>科学玩具 - 新品专区</value>
+  </data>
 </root>

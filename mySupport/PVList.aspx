@@ -9,7 +9,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="container df-container-margin">
         <!-- 路徑導航 Start -->
-        <ucNavi:Ascx_Navi ID="Ascx_Navi1" runat="server" Param_CurrID="103" />
+        <ucNavi:Ascx_Navi ID="Ascx_Navi1" runat="server" Param_CurrID="101" />
         <!-- 路徑導航 End -->
 
         <div class="search">

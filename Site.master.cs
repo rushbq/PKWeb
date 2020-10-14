@@ -163,9 +163,8 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
         //宣告
         StringBuilder html = new StringBuilder();
 
-        //取得資料 - 所有資料(Place = 'both', 'top')
+        //取得資料 - 所有資料
         var DataQuery = from el in DataSrc.AsEnumerable()
-                        where el.Field<string>("Place").ToLower().Equals("both") || el.Field<string>("Place").ToLower().Equals("top")
                         select el;
 
         //Html組成
@@ -212,7 +211,7 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
                     ));
                 
 
-                //顯示資料 - 第二層 (固定式選單)
+                //顯示資料 - 第二層
                 var SubQuery = from el in DataQuery
                                where el.Field<string>("IsRoot").Equals("N")
                                 && el.Field<int>("Parent_ID").Equals(MainItem.Menu_ID)
@@ -222,6 +221,7 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
                                    Menu_Uri = el.Field<string>("Menu_Uri"),
                                    Menu_ID = el.Field<int>("Menu_ID"),
                                    NewOpen = el.Field<string>("NewOpen"),
+                                   Place = el.Field<string>("Place"),
                                    LangCode = el.Field<string>("LangCode"),
                                    Menu_Block = el.Field<string>("Menu_Block")
                                };
@@ -243,14 +243,28 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
                             SubItem.Menu_Name,
                             SubItem.NewOpen.Equals("Y") ? "_blank" : "_self"
                         ));
+
+                    //是否加入分隔線
+                    if (SubItem.Place.Equals("block"))
+                    {
+                        html.AppendLine("<li role=\"separator\" class=\"divider\"></li>");
+                    }
                 }
 
                 //判斷是否要另外取得資料
-                if (MainItem.NewData.Equals("Y"))
+                switch (MainItem.NewData)
                 {
-                    //取得產品分類(Menu:Products)
-                    html.AppendLine(ShowClassMenu());
+                    case "Prod":
+                        //取得工具分類(Menu:Products)
+                        html.AppendLine(ShowClassMenu());
+                        break;
+
+                    case "Toy":
+                        //取得玩具分類(Menu:RobotKits)
+                        html.AppendLine(ShowToyClassMenu());
+                        break;
                 }
+              
 
                 if (SubQuery.Count() > 0)
                 {
@@ -339,7 +353,7 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
 
 
     /// <summary>
-    /// 取得產品分類清單
+    /// 取得產品分類清單-工具
     /// </summary>
     /// <returns></returns>
     private string ShowClassMenu()
@@ -373,12 +387,11 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
                         string ClassName = DT.Rows[row]["Class_Name"].ToString();
                         string LinkUrl = DT.Rows[row]["LinkUrl"].ToString();
 
-                        html.Append("<li><a href=\"{0}\" {3}>{2}</a></li>"
+                        html.Append("<li><a href=\"{0}\"{2}>{1}</a></li>"
                                .FormatThis(
                                     string.IsNullOrEmpty(LinkUrl) ? Application["WebUrl"] + "Products/" + ClassID : LinkUrl
-                                   , ClassID
                                    , ClassName
-                                   , string.IsNullOrEmpty(LinkUrl) ? "" : "target=\"_blank\""
+                                   , string.IsNullOrEmpty(LinkUrl) ? "" : " target=\"_blank\""
                                ));
 
                     }
@@ -398,6 +411,63 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
         }
 
     }
+
+
+    /// <summary>
+    /// 取得產品分類清單-玩具
+    /// </summary>
+    /// <returns></returns>
+    private string ShowToyClassMenu()
+    {
+        try
+        {
+            //[取得資料] - 取得資料
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //宣告
+                StringBuilder SBSql = new StringBuilder();
+                
+                //[SQL] - 資料查詢
+                SBSql.AppendLine(" SELECT RTRIM(Class_ID) AS Class_ID, Class_Name_{0} AS Class_Name".FormatThis(fn_Language.Param_Lang));
+                SBSql.AppendLine(" FROM ProdToy_Class WITH(NOLOCK) ");
+                SBSql.AppendLine(" WHERE (Display = 'Y') AND (Display_PKWeb = 'Y')");
+                SBSql.AppendLine(" ORDER BY Sort, Class_ID");
+                cmd.CommandText = SBSql.ToString();
+                using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.Product, out ErrMsg))
+                {
+                    //填入項目
+                    StringBuilder html = new StringBuilder();
+                    //html.AppendLine("<ul>");
+
+                    for (int row = 0; row < DT.Rows.Count; row++)
+                    {
+                        string ClassID = DT.Rows[row]["Class_ID"].ToString();
+                        string ClassName = DT.Rows[row]["Class_Name"].ToString();
+
+                        html.Append("<li><a href=\"{0}\">{1}</a></li>"
+                               .FormatThis(
+                                     Application["WebUrl"] + "RobotKits/" + ClassID
+                                   , ClassName
+                               ));
+
+                    }
+
+                    //html.AppendLine("</ul>");
+
+                    //輸出Html
+                    return html.ToString();
+
+                }
+
+            }
+        }
+        catch (Exception)
+        {
+            throw new Exception("系統發生錯誤 - Categories");
+        }
+
+    }
+
 
     #region -- 按鈕功能 Start --
 
@@ -464,6 +534,7 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
 
     #endregion -- 按鈕功能 End --
 
+
     #region -- 參數設定 Start --
     /// <summary>
     /// 瀏覽器Title
@@ -488,32 +559,6 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
         }
     }
 
-    /// <summary>
-    /// 經銷商網站網址
-    /// </summary>
-    private string _Dealer_Url;
-    public string Dealer_Url
-    {
-        get
-        {
-            switch (fn_Language.Param_Lang.ToLower())
-            {
-                case "zh_tw":
-                    return "http://w3.prokits.com.tw/tw/Distributor_center/Login.asp";
-
-                case "zh_cn":
-                    return "http://w3.prokits.com.tw/cn/Distributor_center/Login.asp";
-
-                default:
-                    return "http://w3.prokits.com.tw/en/Distributor_center/Login.asp";
-            }
-
-        }
-        set
-        {
-            this._Dealer_Url = value;
-        }
-    }
 
     /// <summary>
     /// Facebook網址
