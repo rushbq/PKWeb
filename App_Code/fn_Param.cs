@@ -27,6 +27,19 @@ public class fn_Param
     }
     private static string _CDNUrl;
 
+    public static string RefUrl
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["RefUrl"];
+        }
+        private set
+        {
+            _RefUrl = value;
+        }
+    }
+    private static string _RefUrl;
+    
 
     /// <summary>
     /// 本站資料庫名(目前為線上下單使用)

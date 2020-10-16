@@ -12,7 +12,7 @@
         <!-- 路徑導航 End -->
         <!-- Content Start -->
         <div class="page-header df-page-header">
-            <h3><%=this.GetLocalResourceObject("text_報價單分類篩選").ToString()%></h3>
+            <h3><%=this.GetLocalResourceObject("text_報價單分類篩選").ToString()%></h3><span style="display:none;"><%=fn_Param.Get_CustID %></span>
         </div>
         <div class="panel panel-info">
             <div class="panel-heading">
