@@ -57,7 +57,7 @@ public class fn_Param
         {
             //測試資料庫
             //return "PKWebTest";
-            return "PKWeb";
+            return "PKWebTest";
         }
         else
         {

@@ -234,6 +234,7 @@ namespace eOrder.Controllers
 
 
         /// <summary>
+        /// [Step3][已停用]
         /// 取得通知信收件人清單 - 寄給負責業務所屬部門
         /// 若無法寄信，要檢查該業務的ERP代號(人員基本資料)是否與ERP對應(客戶基本資料)
         /// </summary>
@@ -616,8 +617,8 @@ namespace eOrder.Controllers
                 sql.AppendLine("  @Data_ID, @TraceID, @CustID, @Data_Type, 1, @Upload_File");
                 sql.AppendLine("  , GETDATE()");
                 sql.AppendLine("  , ISNULL((SELECT TOP 1 Corp.DB_Name FROM [PKSYS].[dbo].[Customer] Cust");
-                sql.AppendLine("     INNER JOIN [PKSYS].[dbo].[Param_Corp] Corp ON Cust.DBS = Corp.Corp_ID");
-                sql.AppendLine("     WHERE (Cust.MA001 = @CustID) AND (Cust.DBS = Cust.DBC)), 'ProUnion')");
+                sql.AppendLine("     INNER JOIN [PKSYS].[dbo].[Param_Corp] Corp ON Cust.DBC = Corp.Corp_ID");
+                sql.AppendLine("     WHERE (Cust.MA001 = @CustID) AND (Cust.DBS = Cust.DBC)), 'SHPK2')");
                 sql.AppendLine(" );");
 
 

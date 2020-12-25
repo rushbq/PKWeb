@@ -303,7 +303,7 @@ public partial class myOrder_Step3 : SecurityCheckDealer
             fn_Mail.Create_Who = "PKWeb-System";
 
             //[設定參數] - 來源程式/功能
-            fn_Mail.FromFunc = "官網-前台, 線上下單";
+            fn_Mail.FromFunc = "官網, 線上下單";
 
             //[設定參數] - 寄件人
             fn_Mail.Sender = System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Sender"];
@@ -324,7 +324,7 @@ public partial class myOrder_Step3 : SecurityCheckDealer
             //}
 
             //發給指定對象(2020/7/20 #99-20200720-0003)
-            emailTo.Add("szsales@mail.prokits.com.tw");
+            //20201225:移除szsales
             emailTo.Add("SH_Sales@mail.prokits.com.tw");
             emailTo.Add("SH_OPTeam@mail.prokits.com.tw");
             emailTo.Add("opteam@mail.prokits.com.tw");
