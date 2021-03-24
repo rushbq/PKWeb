@@ -65,7 +65,8 @@ public partial class mySupport_PVList : System.Web.UI.Page
         try
         {
             //[參數宣告] - 設定本頁Url(末端無須加 "/")
-            this.ViewState["Page_Url"] = Application["WebUrl"] + "PV";
+            this.ViewState["Page_Url"] = "{0}Video/{1}".FormatThis(Application["WebUrl"], Req_ClassType);
+
             ArrayList Params = new ArrayList();
 
             //[參數宣告] - 筆數/分頁設定
@@ -90,7 +91,7 @@ public partial class mySupport_PVList : System.Web.UI.Page
             SBSql.AppendLine("    FROM PV_Group GP ");
             SBSql.AppendLine("      INNER JOIN PV_Area Area ON GP.Group_ID = Area.Group_ID ");
             SBSql.AppendLine("      INNER JOIN PV myData ON GP.Group_ID = myData.Group_ID ");
-            SBSql.AppendLine("    WHERE (GP.Display = 'Y') ");
+            SBSql.AppendLine("    WHERE (GP.Display = 'Y') AND (GP.ClassType = @ClassType)");
             SBSql.AppendLine("      AND (Area.AreaCode = @AreaCode) AND (LOWER(myData.LangCode) = LOWER(@LangCode))");
 
             #region "..查詢條件.."
@@ -142,6 +143,7 @@ public partial class mySupport_PVList : System.Web.UI.Page
             cmd.Parameters.AddWithValue("ED_ITEM", EdItem);
             cmd.Parameters.AddWithValue("AreaCode", fn_Area.PKWeb_Area);
             cmd.Parameters.AddWithValue("LangCode", fn_Language.PKWeb_Lang);
+            cmd.Parameters.AddWithValue("ClassType", Req_ClassType.ToUpper().Equals("TOY") ? "B" : "A");
 
             #endregion
 
@@ -152,7 +154,7 @@ public partial class mySupport_PVList : System.Web.UI.Page
             SBSql.AppendLine(" FROM PV_Group GP ");
             SBSql.AppendLine("   INNER JOIN PV_Area Area ON GP.Group_ID = Area.Group_ID ");
             SBSql.AppendLine("   INNER JOIN PV myData ON GP.Group_ID = myData.Group_ID ");
-            SBSql.AppendLine(" WHERE (GP.Display = 'Y') ");
+            SBSql.AppendLine(" WHERE (GP.Display = 'Y') AND (GP.ClassType = @ClassType)");
             SBSql.AppendLine("   AND (Area.AreaCode = @AreaCode) AND (LOWER(myData.LangCode) = LOWER(@LangCode))");
 
             #region "..查詢條件.."
@@ -192,6 +194,7 @@ public partial class mySupport_PVList : System.Web.UI.Page
             cmdTotalCnt.CommandText = SBSql.ToString();
             cmdTotalCnt.Parameters.AddWithValue("AreaCode", fn_Area.PKWeb_Area);
             cmdTotalCnt.Parameters.AddWithValue("LangCode", fn_Language.PKWeb_Lang);
+            cmdTotalCnt.Parameters.AddWithValue("ClassType", Req_ClassType.ToUpper().Equals("TOY") ? "B" : "A");
             #endregion
 
             //[SQL] - 取得資料
@@ -310,7 +313,8 @@ public partial class mySupport_PVList : System.Web.UI.Page
         try
         {
             StringBuilder SBUrl = new StringBuilder();
-            SBUrl.Append("{0}PV/?s=1".FormatThis(Application["WebUrl"]));
+            SBUrl.Append("{0}Video/{1}/?s=1".FormatThis(
+                    Application["WebUrl"], Req_ClassType));
 
             //[查詢條件] - 分類
             if (this.ddl_ProdClass.SelectedIndex > 0)
@@ -373,6 +377,23 @@ public partial class mySupport_PVList : System.Web.UI.Page
         set
         {
             this._Req_ClassID = value;
+        }
+    }
+
+
+    /// <summary>
+    /// 取得傳遞參數 - 區塊
+    /// </summary>
+    private string _Req_ClassType;
+    public string Req_ClassType
+    {
+        get
+        {
+            return "Tool";
+        }
+        set
+        {
+            this._Req_ClassType = value;
         }
     }
 

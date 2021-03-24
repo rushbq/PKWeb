@@ -14,7 +14,7 @@
         //}
         //// Code that runs when an unhandled error occurs
         //Server.Transfer("~/error.aspx");
-        
+
     }
 
     void Application_Start(object sender, EventArgs e)
@@ -29,8 +29,8 @@
         // Js & Css打包壓縮功能
         BundleTable.EnableOptimizations = true;
         BundleConfig.RegisterBundles(BundleTable.Bundles);
-        
-        
+
+
         // 載入Routing設定
         RegisterRoutes(RouteTable.Routes);
 
@@ -178,7 +178,7 @@
                     { "ClassID", "ALL" }
                     , { "PageID", "1" }});
         routes.MapPageRoute("ProdView", "Product/{DataID}", "~/myProd/ProdView.aspx", false);
-        
+
         /* 產品-Toy */
         routes.MapPageRoute("ProdToyList", "RobotKits/{ClassID}/{PageID}", "~/myToyProd/ProdList.aspx", false,
             new RouteValueDictionary {
@@ -193,7 +193,7 @@
                     { "ClassID", "ALL" }
                     , { "PageID", "1" }});
         routes.MapPageRoute("ProdToyView", "RobotKit/{DataID}", "~/myToyProd/ProdView.aspx", false);
-        
+
 
         /* 最新消息 */
         //[News]
@@ -231,22 +231,24 @@
                     { "myClass", "1" }
                     ,{ "myModel", "ALL" }
                     ,{ "myData", "" }});
-        
+
         // [產品影片]
-        routes.MapPageRoute("PVList", "PV/{PageID}", "~/mySupport/PVList.aspx", false,
-            new RouteValueDictionary {
-                    { "PageID", "1" }});
+        routes.MapPageRoute("PVList_Tool", "Video/Tool/{PageID}", "~/myProd/PVList.aspx", false,
+            new RouteValueDictionary {{ "PageID", "1" } });
+        routes.MapPageRoute("PVList_Toy", "Video/Toy/{PageID}", "~/myToyProd/PVList.aspx", false,
+            new RouteValueDictionary { { "PageID", "1" } });
+        
 
         // [銷售據點]
         routes.MapPageRoute("DealerList", "WhereToBuy", "~/mySupport/DealerList.aspx", false);
         routes.MapPageRoute("DealerView", "WhereToBuy/{DataID}", "~/mySupport/DealerView.aspx", false);
-        
+
         // [聯絡我們]
         routes.MapPageRoute("myInquiry", "ContactUs", "~/mySupport/Inquiry.aspx", false);
         routes.MapPageRoute("myInqNoti", "ContactNoti/{DataID}", "~/mySupport/Message.aspx", false,
           new RouteValueDictionary {
                     { "DataID", "999" }});
-        
+
         /* 關於寶工 */
         routes.MapPageRoute("myProfile", "Profile", "~/myInfo/Profile.aspx", false);
         routes.MapPageRoute("myTrademark", "Trademark", "~/myInfo/Trademark.aspx", false);
@@ -286,7 +288,7 @@
         routes.MapPageRoute("prodRegister", "myTool/register/{code}", "~/mySupport/ProdReg.aspx", false,
           new RouteValueDictionary {
                     { "code", "tw" }});
-        
+
         /* 抽獎活動 */
         routes.MapPageRoute("lotteryIndex", "Lottery/{code}", "~/myLottery/Lot_Index.aspx", false);
         routes.MapPageRoute("lotteryPrize", "Prize/{ParentID}/{DataID}", "~/myLottery/Lot_Result.aspx", false);
@@ -299,7 +301,7 @@
         routes.MapPageRoute("reportShow", "Report/{DataID}", "~/myReport/ReportShow.aspx", false);
         routes.MapPageRoute("reportPrice", "PriceList", "~/myReport/PriceList.aspx", false);
         routes.MapPageRoute("reportPriceFilter", "PLfilter", "~/myReport/PriceList_Index.aspx", false);
-        
+
         /* 經銷商專區-下載 */
         routes.MapPageRoute("DDWPhoto", "D-Download/Photo", "~/myDealer-DW/ProdPhoto.aspx", false);
         routes.MapPageRoute("DDWPackage", "D-Download/Package", "~/myDealer-DW/ProdPackage.aspx", false);
@@ -317,7 +319,7 @@
         routes.MapPageRoute("CartPdfHtml", "EO/PDFHtml/{DataID}", "~/myOrder/PdfHtml.aspx", false);
         routes.MapPageRoute("CartunShip", "EO/unShip", "~/myOrder/unShipList.aspx", false);
 
-                
+
         /* 其他 */
         //Ref網站,檔案下載
         routes.MapPageRoute("fileInRef", "Ref/{Path}/{Name}/{token}", "~/myHandler/Ashx_FileDownload.ashx", false);
@@ -331,8 +333,8 @@
         routes.MapPageRoute("EDMList", "EDM/{ClassID}/{ProgID}/{Year}", "~/myEDM/EDMList.aspx", false,
               new RouteValueDictionary {
                     { "Year", DateTime.Now.Year }});
-        
-        
+
+
         //exception
         routes.MapPageRoute("myException", "myExp/{DataID}", "~/myException/Message.aspx", false,
           new RouteValueDictionary {

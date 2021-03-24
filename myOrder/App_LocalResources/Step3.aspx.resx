@@ -133,7 +133,7 @@
     <value>客戶品號</value>
   </data>
   <data name="txt_Header3" xml:space="preserve">
-    <value>MOQ</value>
+    <value>內盒數量</value>
   </data>
   <data name="txt_Header4" xml:space="preserve">
     <value>最小訂購量</value>

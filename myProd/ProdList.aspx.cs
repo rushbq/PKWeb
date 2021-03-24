@@ -130,6 +130,13 @@ public partial class myProd_ProdList : System.Web.UI.Page
 
             #region "..查詢條件.."
 
+            //排除Toy關聯
+            SBSql.AppendLine(" AND (myData.Model_No NOT IN (");
+            SBSql.AppendLine("  SELECT Rel.Model_No");
+            SBSql.AppendLine("  FROM [ProductCenter].dbo.ProdToy_Class_Rel_ModelNo Rel");
+            SBSql.AppendLine(" ))");
+
+
             //[查詢條件] - 產品類別
             if (!string.IsNullOrEmpty(Req_ClassID) && (!Req_ClassID.ToUpper().Equals("ALL")))
             {
@@ -193,6 +200,12 @@ public partial class myProd_ProdList : System.Web.UI.Page
             SBSql.AppendLine("   AND (GETDATE() >= GP.StartTime) AND (GETDATE() <= GP.EndTime)");
 
             #region "..查詢條件.."
+            //排除Toy關聯
+            SBSql.AppendLine(" AND (myData.Model_No NOT IN (");
+            SBSql.AppendLine("  SELECT Rel.Model_No");
+            SBSql.AppendLine("  FROM [ProductCenter].dbo.ProdToy_Class_Rel_ModelNo Rel");
+            SBSql.AppendLine(" ))");
+
 
             //[查詢條件] - 產品類別
             if (!string.IsNullOrEmpty(Req_ClassID) && (!Req_ClassID.ToUpper().Equals("ALL")))

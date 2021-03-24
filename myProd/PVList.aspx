@@ -9,9 +9,13 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="container df-container-margin">
         <!-- 路徑導航 Start -->
-        <ucNavi:Ascx_Navi ID="Ascx_Navi1" runat="server" Param_CurrID="101" />
+        <%--<ucNavi:Ascx_Navi ID="Ascx_Navi1" runat="server" Param_CurrID="101" />--%>
         <!-- 路徑導航 End -->
-
+        <div class="page-header">
+            <h3>
+                <%=Resources.resPublic.title_工具專區 %>&nbsp;-&nbsp;<%=Resources.resPublic.home_產品影片 %>
+            </h3>
+        </div>
         <div class="search">
             <div class="form-inline">
                 <asp:DropDownList ID="ddl_ProdClass" runat="server" CssClass="form-control"></asp:DropDownList>

@@ -899,7 +899,7 @@ namespace eOrder.Controllers
                 sql.AppendLine(" SELECT Base.CustID, Base.DB_Name, CustDT.SWID, SW.StockType");
                 sql.AppendLine("  , RTRIM(Cust.MA002) ShipWho, RTRIM(Cust.MA006) ShipTel, RTRIM(Cust.MA027) ShipAddr");
                 sql.AppendLine(" FROM {0}.dbo.Order_ImportData Base WITH(NOLOCK)".FormatThis(CurrentDBName));
-                sql.AppendLine("  INNER JOIN Customer Cust WITH(NOLOCK) ON Base.CustID = Cust.MA001");
+                sql.AppendLine("  INNER JOIN Customer Cust WITH(NOLOCK) ON Base.CustID = Cust.MA001 AND Cust.DBS = Cust.DBC");
                 sql.AppendLine("  INNER JOIN Customer_Data CustDT WITH(NOLOCK) ON Cust.MA001 = CustDT.Cust_ERPID");
                 sql.AppendLine("  INNER JOIN ShippingWarehouse SW WITH(NOLOCK) ON CustDT.SWID = SW.SWID");
                 sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
