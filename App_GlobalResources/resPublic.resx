@@ -365,4 +365,7 @@ Mail ： sha@mail.prokits.com.tw</value>
   <data name="title_NewProd_Toy" xml:space="preserve">
     <value>Science Kits - New Arrival</value>
   </data>
+  <data name="tip_twoWords" xml:space="preserve">
+    <value>Type 2 words at least.</value>
+  </data>
 </root>

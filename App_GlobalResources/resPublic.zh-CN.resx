@@ -374,4 +374,7 @@ Mail：sha@mail.prokits.com.tw</value>
   <data name="title_NewProd_Toy" xml:space="preserve">
     <value>科学玩具 - 新品专区</value>
   </data>
+  <data name="tip_twoWords" xml:space="preserve">
+    <value>至少输入2个字</value>
+  </data>
 </root>

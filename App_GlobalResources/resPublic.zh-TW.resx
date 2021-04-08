@@ -374,4 +374,7 @@ Mail：sha@mail.prokits.com.tw</value>
   <data name="title_NewProd_Tool" xml:space="preserve">
     <value>工具專區 - 新品專區</value>
   </data>
+  <data name="tip_twoWords" xml:space="preserve">
+    <value>至少輸入2個字</value>
+  </data>
 </root>

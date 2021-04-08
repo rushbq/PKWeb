@@ -178,7 +178,12 @@
                     { "ClassID", "ALL" }
                     , { "PageID", "1" }});
         routes.MapPageRoute("ProdView", "Product/{DataID}", "~/myProd/ProdView.aspx", false);
-
+        routes.MapPageRoute("ToolSearch", "Search/Tool/{ClassID}/{PageID}", "~/myProd/ProdSearch.aspx", false,
+            new RouteValueDictionary {
+                    { "ClassID", "ALL" }
+                    , { "PageID", "1" }});
+        
+        
         /* 產品-Toy */
         routes.MapPageRoute("ProdToyList", "RobotKits/{ClassID}/{PageID}", "~/myToyProd/ProdList.aspx", false,
             new RouteValueDictionary {
@@ -193,7 +198,11 @@
                     { "ClassID", "ALL" }
                     , { "PageID", "1" }});
         routes.MapPageRoute("ProdToyView", "RobotKit/{DataID}", "~/myToyProd/ProdView.aspx", false);
-
+        routes.MapPageRoute("ToySearch", "Search/RobotKit/{ClassID}/{PageID}", "~/myToyProd/ProdSearch.aspx", false,
+            new RouteValueDictionary {
+                    { "ClassID", "ALL" }
+                    , { "PageID", "1" }});
+        
 
         /* 最新消息 */
         //[News]

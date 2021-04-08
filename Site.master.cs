@@ -502,16 +502,32 @@ public partial class Site : System.Web.UI.MasterPage, IProgID
     /// </summary>
     protected void btn_Search1_Click(object sender, EventArgs e)
     {
-        string k = fn_stringFormat.Set_FilterHtml(this.tb_Keyword1.Text);
-        Response.Redirect("{0}Products/?k={1}".FormatThis(
+        string _txt = this.tb_Keyword1.Text;
+        string _warntxt = Resources.resPublic.tip_twoWords;
+        if (_txt.Length < 2)
+        {
+            fn_Extensions.JsAlert(_warntxt, "");
+            return;
+        }
+
+        string k = fn_stringFormat.Set_FilterHtml(_txt);
+        Response.Redirect("{0}Search/Tool/?k={1}".FormatThis(
                 Application["WebUrl"]
                 , Server.UrlEncode(k)
             ));
     }
     protected void btn_Search2_Click(object sender, EventArgs e)
     {
-        string k = fn_stringFormat.Set_FilterHtml(this.tb_Keyword2.Text);
-        Response.Redirect("{0}Products/?k={1}".FormatThis(
+        string _txt = this.tb_Keyword2.Text;
+        string _warntxt = Resources.resPublic.tip_twoWords;
+        if (_txt.Length < 2)
+        {
+            fn_Extensions.JsAlert(_warntxt, "");
+            return;
+        }
+
+        string k = fn_stringFormat.Set_FilterHtml(_txt);
+        Response.Redirect("{0}Search/Tool/?k={1}".FormatThis(
                 Application["WebUrl"]
                 , Server.UrlEncode(k)
             ));

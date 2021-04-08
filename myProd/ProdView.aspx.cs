@@ -102,7 +102,7 @@ public partial class myProd_ProdView : System.Web.UI.Page
                 SBSql.AppendLine("  FROM FAQ_Group inGP");
                 SBSql.AppendLine("  INNER JOIN FAQ inBase ON inGP.Group_ID = inBase.Group_ID");
                 SBSql.AppendLine("  INNER JOIN FAQ_Rel_ModelNo Rel ON inGP.Group_ID = Rel.Group_ID");
-                SBSql.AppendLine("  WHERE (UPPER(inBase.LangCode) = 'ZH-TW') AND (Rel.Model_No = GP.Model_No)) AS CntFAQ");
+                SBSql.AppendLine("  WHERE (UPPER(inBase.LangCode) = UPPER(@Lang)) AND (Rel.Model_No = GP.Model_No)) AS CntFAQ");
 
                 //判斷是否有商城輔圖
                 SBSql.AppendLine(" , (SELECT COUNT(*) FROM [ProductCenter].dbo.Prod_MallPic WHERE (Model_No = GP.Model_No) AND (UPPER(LangCode) = UPPER(@Lang))) AS CntMallPic");
