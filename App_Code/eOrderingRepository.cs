@@ -1806,7 +1806,7 @@ namespace eOrder.Controllers
                 aryQty.Add(item.Qty);
             }
 
-            //取得價格資料 (DataTable)
+            //取得價格資料 (DataTable)(API -> myPrc_GetFilterQuotePrice)
             DataTable DT_Price = ws_GetPrice.GetQuotePrice(aryCustID.ToArray(), aryModelNo.ToArray(), aryDBS.ToArray(), aryQty.ToArray(), TokenID, out ErrMsg);
             if (DT_Price == null)
             {

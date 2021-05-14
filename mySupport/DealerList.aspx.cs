@@ -24,6 +24,7 @@ public partial class mySupport_DealerList : System.Web.UI.Page
 
                 //取得資料
                 LookupData();
+
             }
 
         }

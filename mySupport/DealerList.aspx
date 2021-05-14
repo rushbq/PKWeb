@@ -40,7 +40,6 @@
         </div>
         <!-- Content End -->
     </div>
-
 </asp:Content>
 <asp:Content ID="myScript" ContentPlaceHolderID="ScriptContent" runat="Server">
     <%: Scripts.Render("~/bundles/lazyload-script") %>

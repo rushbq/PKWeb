@@ -84,10 +84,11 @@ namespace ExtensionMethods
         /// <returns></returns>
         /// <example>
         /// string para = "param1=value1;param2=value2";
-        /// NameValueCollection nv = para.ToNameValueCollection(';', '=');
-        /// foreach (var item in nv.AllKeys)
+        /// NameValueCollection _data = para.ToNameValueCollection(';', '=');
+        /// foreach (var item in _data.AllKeys)
         /// {
-        ///     Response.Write(item + "<BR>");
+        ///    string _name = item;
+        ///    string _val = _data[item];
         /// }
         /// </example>
         public static NameValueCollection ToNameValueCollection(this String inputValue, Char OuterSeparator, Char NameValueSeparator)
@@ -277,6 +278,19 @@ namespace ExtensionMethods
             string trueIP = string.Empty;
             HttpRequest req = HttpContext.Current.Request;
 
+
+            #region -- Akamai Check --
+            //Akamai IP Response
+            ip = req.ServerVariables["True-Client-IP"];
+
+            //check IP from Akamai
+            if (!string.IsNullOrEmpty(ip))
+            {
+                return ip;
+            }
+            #endregion
+
+
             //先取得是否有經過代理伺服器
             ip = req.ServerVariables["HTTP_X_FORWARDED_FOR"];
 
@@ -310,6 +324,33 @@ namespace ExtensionMethods
 
             return trueIP;
         }
+
+
+        /// <summary>
+        /// 取得國碼 from Akamai
+        /// </summary>
+        /// <returns></returns>
+        public static string GetAka_Country()
+        {
+            HttpRequest req = HttpContext.Current.Request;
+
+            //取國家,地區
+            string resp = req.ServerVariables["HTTP_X-Akamai-Edgescape"];
+
+            //解析字串
+            NameValueCollection _data = resp.ToNameValueCollection(',', '=');
+
+            //指定元素
+            if (_data == null)
+            {
+                return "";
+            }
+            else
+            {
+                return _data["country_code"];
+            }
+        }
+
 
         /// <summary>
         /// 檢查 IP 是否合法

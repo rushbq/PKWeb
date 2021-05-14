@@ -186,4 +186,7 @@
   <data name="txt_log" xml:space="preserve">
     <value>或點此查看錯誤記錄</value>
   </data>
+  <data name="txt_Header7" xml:space="preserve">
+    <value>是否匯入</value>
+  </data>
 </root>

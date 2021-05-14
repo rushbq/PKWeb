@@ -128,6 +128,7 @@ public partial class myOrder_Step2 : SecurityCheckDealer
         ((Literal)this.lvDataList.FindControl("lt_Header4")).Text = this.GetLocalResourceObject("txt_Header4").ToString();
         ((Literal)this.lvDataList.FindControl("lt_Header5")).Text = this.GetLocalResourceObject("txt_Header5").ToString();
         ((Literal)this.lvDataList.FindControl("lt_Header6")).Text = this.GetLocalResourceObject("txt_Header6").ToString();
+        ((Literal)this.lvDataList.FindControl("lt_Header7")).Text = this.GetLocalResourceObject("txt_Header7").ToString();
 
     }
 

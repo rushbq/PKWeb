@@ -57,6 +57,9 @@
                                 <th class="text-center" style="width: 100px;">
                                     <asp:Literal ID="lt_Header6" runat="server"></asp:Literal>
                                 </th>
+                                <th class="text-center" style="width: 80px;">
+                                    <asp:Literal ID="lt_Header7" runat="server"></asp:Literal>
+                                </th>
                                 <th>&nbsp;
                                 </th>
                             </tr>
@@ -85,6 +88,9 @@
                         </td>
                         <td class="text-center">
                             <asp:TextBox ID="tb_BuyQty" runat="server" CssClass="form-control text-center" Text='<%#Eval("BuyCnt") %>' ValidationGroup="List"></asp:TextBox>
+                        </td>
+                        <td class="text-center">
+                            <strong><%#Eval("IsPass") %></strong>
                         </td>
                         <td class="text-center">
                             <asp:PlaceHolder ID="ph_Edit" runat="server">
