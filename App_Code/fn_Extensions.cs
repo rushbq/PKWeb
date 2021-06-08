@@ -279,16 +279,16 @@ namespace ExtensionMethods
             HttpRequest req = HttpContext.Current.Request;
 
 
-            #region -- Akamai Check --
-            //Akamai IP Response
-            ip = req.ServerVariables["True-Client-IP"];
+            //#region -- Akamai Check --
+            ////Akamai IP Response
+            //ip = req.ServerVariables["True-Client-IP"];
 
-            //check IP from Akamai
-            if (!string.IsNullOrEmpty(ip))
-            {
-                return ip;
-            }
-            #endregion
+            ////check IP from Akamai
+            //if (!string.IsNullOrEmpty(ip))
+            //{
+            //    return ip;
+            //}
+            //#endregion
 
 
             //先取得是否有經過代理伺服器

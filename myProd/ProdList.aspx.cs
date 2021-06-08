@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using ExtensionMethods;
 using ExtensionUI;
+using MailMethods;
 
 /*
  * 工具產品
@@ -535,6 +536,7 @@ public partial class myProd_ProdList : System.Web.UI.Page
             string _name = tb_Name.Text.Trim();
             string _email = tb_Email.Text.Trim();
             string _message = "【停售商品詢問】 " + _model + " \n\n" + tb_Message.Text.Trim();
+            string TraceID = Cryptograph.GetCurrentTime().ToString();
 
             //[檢查驗證碼]
             string ImgCheckCode = Request.Cookies["ImgCheckCode"].Value;
@@ -554,7 +556,6 @@ public partial class myProd_ProdList : System.Web.UI.Page
             {
                 //宣告
                 StringBuilder SBSql = new StringBuilder();
-                string TraceID = Cryptograph.GetCurrentTime().ToString();
 
                 //[SQL] - 取得新編號
                 SBSql.AppendLine(" DECLARE @NewID AS INT ");
@@ -591,6 +592,81 @@ public partial class myProd_ProdList : System.Web.UI.Page
                 }
             }
 
+
+            //[發送通知信]
+            #region - 寄EMail -
+            //[設定參數] - 建立者(20字)
+            fn_Mail.Create_Who = "PKWeb-System";
+
+            //[設定參數] - 來源程式/功能
+            fn_Mail.FromFunc = "產品列表, 停售詢問";
+
+            //[設定參數] - 寄件人
+            fn_Mail.Sender = System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Sender"];
+
+            //[設定參數] - 寄件人顯示名稱
+            fn_Mail.SenderName = "Pro'sKit";
+
+            //[設定參數] - 收件人
+            fn_Mail.Reciever = emailReceiver();
+
+            //[設定參數] - 轉寄人群組
+            fn_Mail.CC = null;
+
+            //[設定參數] - 密件轉寄人群組
+            fn_Mail.BCC = null;
+
+            //[設定參數] - 郵件主旨
+            fn_Mail.Subject = "[官網]{0} {1} ,#{2}".FormatThis("[停售商品詢問]", _model, TraceID);
+
+            //[設定參數] - 郵件內容
+            #region 郵件內容
+
+            StringBuilder mailBody = new StringBuilder();
+            //內容主體
+            mailBody.Append(this.GetLocalResourceObject("mail_郵件內容").ToString());
+
+            //回覆連結網址
+            mailBody.Replace("#LinkUrl#", "http://pkef.prokits.com.tw?t=inquiry&dataID={0}".FormatThis(TraceID));
+            //發出時間
+            mailBody.Replace("#CurrTime#", DateTime.Now.ToString().ToDateString("yyyy-MM-dd HH:mm"));
+            //追蹤編號
+            mailBody.Replace("#TraceID#", TraceID);
+
+            //留言資料
+            string GetMessage = "<div>詢問商品：{0}</div><div>留言者：{1}</div><div>EMail：{2}</div><div>詢問內容：<br>{3}</div>"
+                .FormatThis(
+                 _model
+                 , _name
+                 , _email
+                 , _message
+                );
+
+            mailBody.Replace("#CustData#", GetMessage);
+
+            fn_Mail.MailBody = mailBody;
+
+            #endregion
+
+            //[設定參數] - 指定檔案 - 路徑
+            fn_Mail.FilePath = "";
+
+            //[設定參數] - 指定檔案 - 檔名
+            fn_Mail.FileName = "";
+
+            //發送郵件
+            fn_Mail.SendMail();
+
+            //[判斷參數] - 寄信是否成功
+            if (!fn_Mail.MessageCode.Equals(200))
+            {
+                //寄信發生錯誤, 需要檢查(Log_SendMail)
+                //Response.Redirect("{0}ContactNoti".FormatThis(Application["WebUrl"].ToString()));
+                //return;                
+            }
+            #endregion
+
+
             //OK
             fn_Extensions.JsAlert("Thank you!", this.ViewState["Page_Url"].ToString());
         }
@@ -600,6 +676,48 @@ public partial class myProd_ProdList : System.Web.UI.Page
             throw;
         }
 
+    }
+
+
+    /// <summary>
+    /// 取得收信人
+    /// </summary>
+    /// <returns></returns>
+    private List<string> emailReceiver()
+    {
+        //[取得資料]
+        using (SqlCommand cmd = new SqlCommand())
+        {
+            StringBuilder SBSql = new StringBuilder();
+
+            SBSql.AppendLine(" SELECT MailAddress ");
+            SBSql.AppendLine(" FROM Inquiry_Receiver WITH (NOLOCK) ");
+            SBSql.AppendLine(" WHERE (AreaCode = @AreaCode) AND (Display = 'Y')");
+            cmd.CommandText = SBSql.ToString();
+            cmd.Parameters.AddWithValue("AreaCode", fn_Area.PKWeb_Area);
+
+            // SQL查詢執行
+            using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+            {
+                List<string> GetEmail = new List<string>();
+
+                //若無資料則塞mis@mail.prokits.com.tw
+                if (DT.Rows.Count == 0)
+                {
+                    GetEmail.Add("mis@mail.prokits.com.tw");
+                }
+                else
+                {
+                    for (int row = 0; row < DT.Rows.Count; row++)
+                    {
+                        GetEmail.Add(DT.Rows[row]["MailAddress"].ToString());
+                    }
+                }
+
+                return GetEmail;
+
+            }
+        }
     }
 
     #endregion

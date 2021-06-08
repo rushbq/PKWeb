@@ -171,4 +171,12 @@
   <data name="txt_未開賣" xml:space="preserve">
     <value>产品上架处理中，请洽: 400-1099-508取得更多讯息，谢谢!</value>
   </data>
+  <data name="mail_郵件內容" xml:space="preserve">
+    <value>&lt;p&gt;Dears,&lt;/p&gt;
+&lt;p&gt;官網有新的諮詢需求，&lt;a href="#LinkUrl#"&gt;請點我前往查看/回覆&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;發出時間：#CurrTime#&lt;/p&gt;
+&lt;p&gt;追蹤編號：#TraceID#&lt;/p&gt;
+&lt;hr/&gt;
+&lt;div&gt;#CustData#&lt;/div&gt;</value>
+  </data>
 </root>

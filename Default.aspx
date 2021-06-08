@@ -95,7 +95,7 @@
                 <div class="col-xs-6 col-sm-3 col-md-3">
                     <div class="block">
                         <h3><%=Resources.resPublic.home_產品影片 %></h3>
-                        <a href="<%=Application["WebUrl"] %>PV/" target="_blank">
+                        <a href="<%=Application["WebUrl"] %>Video/Tool/" target="_blank">
                             <img src="<%=CDN_Url %>images/PKWeb/index/product_video.jpg" class="img-responsive" alt="" /></a>
                     </div>
                 </div>

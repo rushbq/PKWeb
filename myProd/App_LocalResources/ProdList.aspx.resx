@@ -171,4 +171,12 @@
   <data name="txt_未開賣" xml:space="preserve">
     <value>Please contact sales team for more information. Tel. +886-2-2218-3233</value>
   </data>
+  <data name="mail_郵件內容" xml:space="preserve">
+    <value>&lt;p&gt;Dears,&lt;/p&gt;
+&lt;p&gt;There is a new enquiry，&lt;a href="#LinkUrl#"&gt;click here to check &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Sending time：#CurrTime#&lt;/p&gt;
+&lt;p&gt;Tracker ID：#TraceID#&lt;/p&gt;
+&lt;hr/&gt;
+&lt;div&gt;#CustData#&lt;/div&gt;</value>
+  </data>
 </root>

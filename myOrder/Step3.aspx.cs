@@ -303,7 +303,7 @@ public partial class myOrder_Step3 : SecurityCheckDealer
             fn_Mail.Create_Who = "PKWeb-System";
 
             //[設定參數] - 來源程式/功能
-            fn_Mail.FromFunc = "官網, 線上下單";
+            fn_Mail.FromFunc = "線上下單,下單通知";
 
             //[設定參數] - 寄件人
             fn_Mail.Sender = System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Sender"];

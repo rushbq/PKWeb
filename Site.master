@@ -186,6 +186,11 @@
                                     <img src="<%=fn_Param.CDNUrl %>images/PKWeb/index/community/youku.png" alt="YouKu" />
                                 </a>
                             </li>
+                            <li>
+                                <a href="https://timeline.line.me/user/_dQxkeWMrvaSKp9xU_2cXWpiBSU7uj9ZXuGzXwGY?utm_medium=windows&utm_source=desktop&utm_campaign=OA_Profile" target="_blank" title="Line@">
+                                    <img src="<%=fn_Param.CDNUrl %>images/PKWeb/index/community/line.png" alt="Line" />
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="footer-block">

@@ -130,7 +130,7 @@ public partial class Inquiry : SecurityCheck
                 fn_Mail.Create_Who = "PKWeb-System";
 
                 //[設定參數] - 來源程式/功能
-                fn_Mail.FromFunc = "官網-前台, Inquiry";
+                fn_Mail.FromFunc = "技術支援, Inquiry";
 
                 //[設定參數] - 寄件人
                 fn_Mail.Sender = System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Sender"];
@@ -148,7 +148,7 @@ public partial class Inquiry : SecurityCheck
                 fn_Mail.BCC = null;
 
                 //[設定參數] - 郵件主旨
-                fn_Mail.Subject = this.GetLocalResourceObject("mail_郵件主旨").ToString() + " - 追蹤編號:{0}".FormatThis(TraceID);
+                fn_Mail.Subject = this.GetLocalResourceObject("mail_郵件主旨").ToString() + " ,#{0}".FormatThis(TraceID);
 
                 //[設定參數] - 郵件內容
                 #region 郵件內容

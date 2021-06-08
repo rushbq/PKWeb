@@ -554,7 +554,7 @@ public partial class myProd_ProdView : System.Web.UI.Page
 
 
     /// <summary>
-    /// 取得產品影片
+    /// 取得產品影片(發佈日最新)
     /// </summary>
     /// <returns></returns>
     private string GetData_Video(string size, string pos)
@@ -576,6 +576,7 @@ public partial class myProd_ProdView : System.Web.UI.Page
             SBSql.AppendLine("  AND GP.Group_ID IN (");
             SBSql.AppendLine("   SELECT Group_ID FROM PV_Group_Rel_ModelNo WHERE (UPPER(Model_No) = UPPER(@Model_No))");
             SBSql.AppendLine("  )");
+            SBSql.AppendLine(" ORDER BY myData.PV_PubDate DESC");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.Clear();
             cmd.Parameters.AddWithValue("Area", fn_Area.PKWeb_Area);
