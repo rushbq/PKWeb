@@ -82,7 +82,7 @@
                     <div class="block">
                         <h3><%=Resources.resPublic.home_電子目錄 %></h3>
                         <a href="<%=Catalog_Url%>" target="_blank">
-                            <img src="<%=CDN_Url %>images/PKWeb/index/catalogue/<%=fn_Language.PKWeb_Lang %>.jpg?v=20190505" class="img-responsive" alt="Catalog" /></a>
+                            <img src="<%=CDN_Url %>images/PKWeb/index/catalogue/<%=fn_Language.PKWeb_Lang %>.jpg?v=20210605" class="img-responsive" alt="Catalog" /></a>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3 col-md-3">

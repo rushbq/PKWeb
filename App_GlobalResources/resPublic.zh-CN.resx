@@ -377,4 +377,10 @@ Mail：sha@mail.prokits.com.tw</value>
   <data name="tip_twoWords" xml:space="preserve">
     <value>至少输入2个字</value>
   </data>
+  <data name="meta_description" xml:space="preserve">
+    <value>1991年成立的国际知名工具品牌Pro’sKit宝工，经销网路遍及五大洲90馀国，提供全球客户完整的工具解决方案，产品涵盖专业手工具、电动工具、测试仪器、焊接工具和工具组等20大类4000多项，满足市场一次购足的需求。</value>
+  </data>
+  <data name="meta_og_description" xml:space="preserve">
+    <value>行家选择尽在宝工</value>
+  </data>
 </root>

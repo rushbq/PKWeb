@@ -94,13 +94,15 @@ public class fn_Param
                 {
                     string url = DT.Rows[0]["Url"].ToString();
 
-                    //判斷是否只有1筆, 直接抓Shop_Redirect, 大於1筆則跳出Frame_GoBuy頁面 (參數id/name/area)
+                    //判斷資料筆數是否為多筆, 若是則跳出Frame_GoBuy頁面 (參數id/name/area)
                     if (DT.Rows.Count == 1)
                     {
+                        //單筆(直接導向)
                         return new string[] { "direct", url };
                     }
                     else
                     {
+                        //多筆(跳小視窗)
                         return new string[] { "frame"
                             , "{0}Ajax_Data/Frame_GoBuy.aspx?area={1}".FormatThis(
                             System.Web.Configuration.WebConfigurationManager.AppSettings["WebUrl"]
@@ -108,6 +110,7 @@ public class fn_Param
                     }
                 }
 
+                //無資料(不顯示購買連結)
                 return new string[] { "none", "" };
             }
         }

@@ -368,4 +368,10 @@ Mail ： sha@mail.prokits.com.tw</value>
   <data name="tip_twoWords" xml:space="preserve">
     <value>Type 2 words at least.</value>
   </data>
+  <data name="meta_description" xml:space="preserve">
+    <value>Prokit's has been developing its product line and expanding its business with the policy of innovation, quality and service with customers over 90 countries throughout the world. As a leading tool supplier in Taiwan with outstanding performance for export, Prokit's won the "Rising Star Award" from MOEA (The Ministry of Economic Affairs) in 2001. Pro’sKit always strives to improve and upgrade itself to shine. Pro’sKit brand as one of the leading tool brand, for the rapid growth of the Prokit’s market share, Prokit’s Shanghai branch was established, mission in product R&amp;D, Production, warehouse, and focusing on expanding the sales channels in China market.</value>
+  </data>
+  <data name="meta_og_description" xml:space="preserve">
+    <value>A friend that you can  trust</value>
+  </data>
 </root>

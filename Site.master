@@ -12,13 +12,13 @@
     <asp:PlaceHolder ID="ph_MetaInfo" runat="server">
         <title><%=Param_WebTitle%></title>
         <meta name="author" content="Prokits Industries Co. LTD." />
-        <meta name="keywords" content="寶工, 工具, Proskit, Prokits, Tool" />
-        <meta name="description" content="超過25年的國際知名工具品牌Pro’sKit寶工，經銷網路遍及五大洲90餘國，提供全球客戶完整的工具解決方案，產品涵蓋專業手工具、電動工具、測試儀器、焊接工具和工具組等20大類4000多項，滿足市場一次購足的需求。" />
+        <meta name="keywords" content="寶工, 宝工, 工具, Proskit, Prokits, Tool" />
+        <meta name="description" content="<%=resPublic.meta_description %>" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Pros'Kit" />
         <meta property="og:url" content="<%=Application["WebUrl"] %>" />
         <meta property="og:title" content="Pro'sKit Professional Tool Kits" />
-        <meta property="og:description" content="行家選擇，盡在寶工。A friend that you can trust." />
+        <meta property="og:description" content="<%=resPublic.meta_og_description %>" />
         <meta property="og:image" content="<%=Application["WebUrl"] %>images/logo_1200.png" />
         <meta property="og:locale" content="zh_TW" />
         <meta property="fb:app_id" content="<%=fn_Param.FB_AppID %>" />
